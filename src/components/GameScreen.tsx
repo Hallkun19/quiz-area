@@ -73,7 +73,7 @@ export default function GameScreen({ roomId, roomCode, role, participantId, onRe
 
     // 提出状況を監視（ホスト向け）
     const sChannel = supabase.channel(`submissions-${roomId}-${Date.now()}`)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'submissions' }, () => {
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'submissions', filter: `question_id=eq.${currentQuestion?.id || '00000000-0000-0000-0000-000000000000'}` }, () => {
         setSubmissionCount((prev) => prev + 1);
       })
       .subscribe();

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface UserState {
   nickname: string;
@@ -13,15 +14,22 @@ interface UserState {
   clearRoom: () => void;
 }
 
-export const useStore = create<UserState>((set) => ({
-  nickname: '',
-  role: null,
-  participantId: null,
-  roomId: null,
-  roomCode: null,
-  setNickname: (name) => set({ nickname: name }),
-  setRole: (role) => set({ role }),
-  setParticipantId: (id) => set({ participantId: id }),
-  setRoom: (id, code) => set({ roomId: id, roomCode: code }),
-  clearRoom: () => set({ roomId: null, roomCode: null, role: null, participantId: null }),
-}));
+export const useStore = create<UserState>()(
+  persist(
+    (set) => ({
+      nickname: '',
+      role: null,
+      participantId: null,
+      roomId: null,
+      roomCode: null,
+      setNickname: (name) => set({ nickname: name }),
+      setRole: (role) => set({ role }),
+      setParticipantId: (id) => set({ participantId: id }),
+      setRoom: (id, code) => set({ roomId: id, roomCode: code }),
+      clearRoom: () => set({ roomId: null, roomCode: null, role: null, participantId: null }),
+    }),
+    {
+      name: 'quiz-storage',
+    }
+  )
+);

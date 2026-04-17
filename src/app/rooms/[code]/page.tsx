@@ -47,7 +47,7 @@ export default function RoomPage() {
       .channel(`room-${code}`)
       .on(
         'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'rooms', filter: `code=eq.${code}` },
+        { event: 'UPDATE', schema: 'public', table: 'rooms', filter: `id=eq.${roomId}` },
         (payload) => {
           const newStatus = payload.new.status;
           if (newStatus) {
